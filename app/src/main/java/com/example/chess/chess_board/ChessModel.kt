@@ -2,7 +2,7 @@ package com.example.chess.chess_board
 
 class ChessModel {
 
-    private var pieceBox = mutableSetOf<Pieces>()
+    var pieceBox = mutableSetOf<Pieces>()
 
     init {
         reset()
