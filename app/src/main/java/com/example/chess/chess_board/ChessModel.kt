@@ -1,38 +1,41 @@
 package com.example.chess.chess_board
 
-class ChessModel {
+import androidx.lifecycle.ViewModel
 
-    var pieceBox = mutableSetOf<Pieces>()
+class ChessModel : ViewModel() {
+
+    var cellBox = mutableSetOf<Pieces>()
 
     init {
-        reset()
-    }
-    private fun reset(){
-        pieceBox.removeAll(pieceBox)
-        for (i in 0..7){
-            pieceBox.add(Pieces(i , 1,Rank.PAWN,Player.WHITE))
-            pieceBox.add(Pieces(i , 6,Rank.PAWN,Player.BLACK))
-        }
-        for (i in 0..1){
-            pieceBox.add(Pieces(i * 1 * 7 , 0,Rank.ROOK,Player.WHITE))
-            pieceBox.add(Pieces(i * 1 * 7 , 7,Rank.ROOK,Player.BLACK))
-
-            pieceBox.add(Pieces(i * 5 + 1  , 0,Rank.KNIGHT,Player.WHITE))
-            pieceBox.add(Pieces(i * 5 + 1  , 7,Rank.KNIGHT,Player.BLACK))
-
-            pieceBox.add(Pieces(i * 3 + 2 , 0,Rank.BISHOP,Player.WHITE))
-            pieceBox.add(Pieces(i * 3 + 2 , 7,Rank.BISHOP,Player.BLACK))
-        }
-        pieceBox.add(Pieces(3, 0,Rank.QUEEN,Player.WHITE))
-        pieceBox.add(Pieces(3, 7,Rank.QUEEN,Player.BLACK))
-
-        pieceBox.add(Pieces(4, 0,Rank.KING,Player.WHITE))
-        pieceBox.add(Pieces(4, 7,Rank.KING,Player.BLACK))
+        startPosition()
     }
 
-    private fun pieceAt(col: Int, row: Int): Pieces?{
-        for (piece in pieceBox){
-            if (col == piece.col && row == piece.row){
+    private fun startPosition() {
+        cellBox.removeAll(cellBox)
+        for (i in 1..8) {
+            cellBox.add(Pieces(2, i, Rank.PAWN, Player.WHITE))
+            cellBox.add(Pieces(7, i, Rank.PAWN, Player.BLACK))
+        }
+        for (i in 0..1) {
+            cellBox.add(Pieces(1, if (i * 8 == 0) 1 else i * 8, Rank.ROOK, Player.WHITE))
+            cellBox.add(Pieces(8, if (i * 8 == 0) 1 else i * 8, Rank.ROOK, Player.BLACK))
+
+            cellBox.add(Pieces(1, i * 5 + 2, Rank.KNIGHT, Player.WHITE))
+            cellBox.add(Pieces(8, i * 5 + 2, Rank.KNIGHT, Player.BLACK))
+
+            cellBox.add(Pieces(1, i * 3 + 3, Rank.BISHOP, Player.WHITE))
+            cellBox.add(Pieces(8, i * 3 + 3, Rank.BISHOP, Player.BLACK))
+        }
+        cellBox.add(Pieces(1, 4, Rank.QUEEN, Player.WHITE))
+        cellBox.add(Pieces(8, 4, Rank.QUEEN, Player.BLACK))
+
+        cellBox.add(Pieces(1, 5, Rank.KING, Player.WHITE))
+        cellBox.add(Pieces(8, 5, Rank.KING, Player.BLACK))
+    }
+
+    fun pieceAt(col: Int, row: Int): Pieces? {
+        for (piece in cellBox) {
+            if (col == piece.col && row == piece.row) {
                 return piece
             }
         }
@@ -41,16 +44,16 @@ class ChessModel {
 
     override fun toString(): String {
         var desc = " \n"
-        for (row in 7 downTo 0 ){
+        for (row in 8 downTo 1) {
             desc += "$row"
-            for (col in 0..7){
-                val piece = pieceAt(col,row)
-                if (piece == null){
+            for (col in 1..8) {
+                val piece = pieceAt(col, row)
+                if (piece == null) {
                     desc += " ."
-                }else{
+                } else {
                     val white = piece.player == Player.WHITE
                     desc += " "
-                    desc += when(piece.rank){
+                    desc += when (piece.rank) {
                         Rank.ROOK -> {
                             if (white) "r" else "R"
                         }
@@ -74,7 +77,7 @@ class ChessModel {
             }
             desc += " \n"
         }
-        desc += "  0 1 2 3 4 5 6 7"
+        desc += "  1 2 3 4 5 6 7 8"
         return desc
     }
 }
