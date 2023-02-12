@@ -1,6 +1,7 @@
 package com.example.chess.chess_board
 
 import androidx.lifecycle.ViewModel
+import com.example.chess.R
 
 class ChessModel : ViewModel() {
 
@@ -33,10 +34,50 @@ class ChessModel : ViewModel() {
         cellBox.add(Pieces(8, 5, Rank.KING, Player.BLACK))
     }
 
+    fun possibleMoves() {
+        cellBox.remove(Pieces(2, 5, Rank.PAWN, Player.WHITE))
+        cellBox.add(Pieces(4, 5, Rank.PAWN, Player.WHITE))
+    }
+
     fun pieceAt(col: Int, row: Int): Pieces? {
         for (piece in cellBox) {
             if (col == piece.col && row == piece.row) {
                 return piece
+            }
+        }
+        return null
+    }
+
+    fun piecePicture(col: Int, row: Int): Int?{
+        val piece = pieceAt(col, row)
+        val white = piece?.player == Player.WHITE
+
+        if(piece != null){
+            when(piece.rank){
+                Rank.ROOK -> {
+                    return if (white) R.drawable.w_rook
+                    else R.drawable.b_rook
+                }
+                Rank.BISHOP -> {
+                    return if (white) R.drawable.w_bishop
+                    else R.drawable.b_bishop
+                }
+                Rank.PAWN -> {
+                    return if (white)R.drawable.w_pawn
+                    else  R.drawable.b_pawn
+                }
+                Rank.KING -> {
+                    return if (white)  R.drawable.w_king
+                    else R.drawable.b_king
+                }
+                Rank.QUEEN -> {
+                    return if (white) R.drawable.w_queen
+                    else  R.drawable.b_queen
+                }
+                Rank.KNIGHT -> {
+                    return if (white)  R.drawable.w_knight
+                    else  R.drawable.b_knight
+                }
             }
         }
         return null
