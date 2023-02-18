@@ -1,14 +1,61 @@
-package com.example.chess.chess_board
+package com.example.chess.viewmodel
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.chess.R
+import com.example.chess.chess_board_ui.Pieces
+import com.example.chess.chess_board_ui.Player
+import com.example.chess.chess_board_ui.Rank
+import com.example.chess.chess_engine.EngineEvent
+import com.example.chess.chess_engine.EngineState
 
 class ChessModel : ViewModel() {
 
     var cellBox = mutableSetOf<Pieces>()
+    private val _state = mutableStateOf(EngineState())
+    val state: State<EngineState> = _state
 
     init {
         startPosition()
+    }
+
+    fun onEvent(event: EngineEvent) {
+        when (event) {
+            is EngineEvent.ToPosition -> {
+                _state.value = state.value.copy(
+                    col = event.col,
+                    row = event.row
+                )
+//                cellBox.remove(
+//                    state.value.pieces?.let {
+//                        Pieces(
+//                            it.col,
+//                            it.row,
+//                            Rank.PAWN,
+//                            Player.WHITE
+//                        )
+//                    }
+//                    )
+//                    cellBox.add(
+//                        Pieces(
+//                            _state.value.col!!,
+//                            _state.value.row!!,
+//                            Rank.PAWN,
+//                            Player.WHITE
+//                        )
+//                    )
+                if(_state.value.pieces != null){
+                    val piece = _state.value.pieces
+
+                }
+            }
+            is EngineEvent.MoveToPosition -> {
+                _state.value = state.value.copy(
+                    pieces = event.pieces
+                )
+            }
+        }
     }
 
     private fun startPosition() {
@@ -48,12 +95,13 @@ class ChessModel : ViewModel() {
         return null
     }
 
-    fun piecePicture(col: Int, row: Int): Int?{
+
+    fun piecePicture(col: Int, row: Int): Int? {
         val piece = pieceAt(col, row)
         val white = piece?.player == Player.WHITE
 
-        if(piece != null){
-            when(piece.rank){
+        if (piece != null) {
+            when (piece.rank) {
                 Rank.ROOK -> {
                     return if (white) R.drawable.w_rook
                     else R.drawable.b_rook
@@ -63,25 +111,26 @@ class ChessModel : ViewModel() {
                     else R.drawable.b_bishop
                 }
                 Rank.PAWN -> {
-                    return if (white)R.drawable.w_pawn
-                    else  R.drawable.b_pawn
+                    return if (white) R.drawable.w_pawn
+                    else R.drawable.b_pawn
                 }
                 Rank.KING -> {
-                    return if (white)  R.drawable.w_king
+                    return if (white) R.drawable.w_king
                     else R.drawable.b_king
                 }
                 Rank.QUEEN -> {
                     return if (white) R.drawable.w_queen
-                    else  R.drawable.b_queen
+                    else R.drawable.b_queen
                 }
                 Rank.KNIGHT -> {
-                    return if (white)  R.drawable.w_knight
-                    else  R.drawable.b_knight
+                    return if (white) R.drawable.w_knight
+                    else R.drawable.b_knight
                 }
             }
         }
         return null
     }
+
 
     override fun toString(): String {
         var desc = " \n"

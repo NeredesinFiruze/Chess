@@ -1,4 +1,4 @@
-package com.example.chess.chess_board
+package com.example.chess.chess_board_ui
 
 data class Pieces(
     val col: Int,
