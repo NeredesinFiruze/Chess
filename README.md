@@ -7,6 +7,6 @@
 
 # Previews
 <p align="center">
-<img src="https://raw.githubusercontent.com/NeredesinFiruze/Shopping-List/main/app/src/debug/res/drawable/first.gif" width="30%" />  
-<img src="https://raw.githubusercontent.com/NeredesinFiruze/Shopping-List/main/app/src/debug/res/drawable/second.gif" width="30%" />
+<img src="https://github.com/NeredesinFiruze/Chess/blob/master/app/src/main/res/drawable/screenshot1.png" width="30%" />  
+<img src="https://github.com/NeredesinFiruze/Chess/blob/master/app/src/main/res/drawable/screenshot2.png" width="30%" />
 </p>
