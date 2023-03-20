@@ -1,4 +1,4 @@
-package com.example.chess.chess_board_ui
+package com.example.chess.chess_engine
 
 data class Pieces(
     val col: Int,
@@ -20,4 +20,3 @@ enum class Player{
     WHITE,
     BLACK
 }
-
