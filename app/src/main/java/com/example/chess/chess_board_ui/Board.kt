@@ -6,51 +6,53 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.example.chess.chess_engine.EngineEvent
 import com.example.chess.ui.theme.Cell1
 import com.example.chess.ui.theme.Cell2
-import com.example.chess.viewmodel.ChessModel
+import com.example.chess.chess_engine.ChessModel
 
 @Composable
-fun UIBoard(viewModel: ChessModel) {
-    Column {
-        repeat(4) { col ->
+fun Board(viewModel: ChessModel) {
+    Column (
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
+    ){
+        repeat(4){col->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement =Arrangement.Center
             ) {
-                repeat(4) { row ->
+                repeat(4){row->
                     Cell(
-                        col = 9 - ((col + 1) * 2 - 1),
                         background = Cell1,
+                        col = 9 - ((col + 1) * 2 - 1),
                         row = (row + 1) * 2 - 1,
                         viewModel = viewModel
                     )
                     Cell(
-                        col = 9 - ((col + 1) * 2 - 1),
                         background = Cell2,
+                        col = 9 - ((col + 1) * 2 - 1),
                         row = (row + 1) * 2,
                         viewModel = viewModel
                     )
                 }
             }
-            Row(
+            Row (
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                repeat(4) { row ->
+                horizontalArrangement =Arrangement.Center
+            ){
+                repeat(4){row->
                     Cell(
-                        col = 9 - ((col + 1) * 2),
                         background = Cell2,
+                        col = 9 - ((col + 1) * 2),
                         row = (row + 1) * 2 - 1,
                         viewModel = viewModel
                     )
                     Cell(
-                        col = 9 - ((col + 1) * 2),
                         background = Cell1,
+                        col = 9 - ((col + 1) * 2),
                         row = (row + 1) * 2,
                         viewModel = viewModel
                     )
@@ -62,21 +64,17 @@ fun UIBoard(viewModel: ChessModel) {
 
 @Composable
 fun Cell(
-    size: Dp = 45.dp,
-    isClicked: Boolean = false,
     background: Color,
     col: Int,
     row: Int,
     viewModel: ChessModel
 ) {
-    val click by remember { mutableStateOf(!isClicked) }
     Box(
         modifier = Modifier
-            .background(if (click) background else Color.Blue)
-            .size(DpSize(size, size))
+            .size(DpSize(45.dp, 45.dp))
+            .background(background)
             .clickable {
-                viewModel.onEvent(EngineEvent.ToPosition(col, row))
-                println(viewModel.state.value)
+                viewModel.onEvent(EngineEvent.MoveTo(col, row))
             }
     )
 }
