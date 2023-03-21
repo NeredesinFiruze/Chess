@@ -20,5 +20,5 @@
 ### **You can see the in-app images below;**
 <p align="start">
 <img src="https://github.com/NeredesinFiruze/Chess/blob/master/app/src/main/res/drawable/screenshot3.png" width="30%" /> 
-<img src="https://github.com/NeredesinFiruze/Chess/blob/master/app/src/main/res/drawable/gif1.png" width="30%" /> 
+<img src="https://github.com/NeredesinFiruze/Chess/blob/master/app/src/main/res/drawable/gif1.gif" width="30%" /> 
 </p>

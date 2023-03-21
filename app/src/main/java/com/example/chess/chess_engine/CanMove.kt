@@ -129,7 +129,7 @@ class CanMove {
                     val enemy3 = viewModel.pieceAt(col + 1, row)
 
                     if (enemy3 == null) allPosition.add("${col + 1}$row".toInt())
-                    if (col == 2) allPosition.add("${col + 2}$row".toInt())
+                    if (col == 2 && viewModel.pieceAt(col + 2, row) == null) allPosition.add("${col + 2}$row".toInt())
                     if (enemy?.player == Player.BLACK) allPosition.add("${enemy.col}${enemy.row}".toInt())
                     if (enemy2?.player == Player.BLACK) allPosition.add("${enemy2.col}${enemy2.row}".toInt())
                 } else {
