@@ -20,41 +20,59 @@ class ChessModel: ViewModel() {
         startPosition()
     }
 
-
     fun onEvent(event: EngineEvent) {
         when (event) {
             is EngineEvent.ChoosePiece -> {
-                _state.value = _state.value.copy(
-                    piece = event.piece
-                )
+                viewModelScope.launch {
+                    _state.value = _state.value.copy(
+                        piece = event.piece
+                    )
+                    _boardState.collectLatest {
+                        it.canMove = CanMove().canMove(event.piece, this@ChessModel)
+                    }
+                }
             }
             is EngineEvent.MoveTo -> {
                 if (_state.value.piece != null) {
                     viewModelScope.launch {
 
                         val piece = _state.value.piece!!
+                        val canMove = CanMove().canMove(piece,this@ChessModel)
 
                         _state.value = _state.value.copy(
                             toCol = event.col,
                             toRow = event.row
                         )
 
-                        _boardState.collect { setBoard ->
-                            setBoard.board.remove(_state.value.piece)
-                            setBoard.board.add(
-                                Pieces(
-                                    _state.value.toCol!!,
-                                    _state.value.toRow!!,
-                                    piece.rank,
-                                    piece.player
+                        val move = "${_state.value.toCol}${_state.value.toRow}".toInt()
+                        val condition = canMove.contains(move)
+
+                        if (condition){
+                            _boardState.collect { setBoard ->
+                                setBoard.board.remove(_state.value.piece)
+                                val enemyPiece = pieceAt(_state.value.toCol!!,_state.value.toRow!!)
+                                if (enemyPiece != null){
+                                    setBoard.board.remove(enemyPiece)
+                                }
+                                setBoard.board.add(
+                                    Pieces(
+                                        _state.value.toCol!!,
+                                        _state.value.toRow!!,
+                                        piece.rank,
+                                        piece.player
+                                    )
                                 )
-                            )
+                                _boardState.value.canMove = arrayListOf()
+                                _state.value = _state.value.copy(
+                                    piece = null
+                                )
+                            }
+                        }else{
                             _state.value = _state.value.copy(
                                 piece = null
                             )
                         }
                     }
-
                 } else return
             }
         }
@@ -92,7 +110,6 @@ class ChessModel: ViewModel() {
         }
         return null
     }
-
 
     fun piecePicture(col: Int, row: Int): Int? {
         val piece = pieceAt(col, row)

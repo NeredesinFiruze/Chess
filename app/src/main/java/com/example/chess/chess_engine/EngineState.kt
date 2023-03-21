@@ -8,5 +8,7 @@ data class EngineState(
 
 data class BoardState(
     val board: ArrayList<Pieces> = arrayListOf(),
+    val turn: Player = Player.WHITE,
+    var canMove: ArrayList<Int> = arrayListOf(),
     val state: EngineState = EngineState()
 )
