@@ -3,11 +3,15 @@ package com.example.chess.chess_board_ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.chess.chess_engine.EngineEvent
 import com.example.chess.chess_engine.ChessModel
 
@@ -25,6 +29,12 @@ fun BoardWithPiece(viewModel: ChessModel) {
                 viewModel = viewModel
             )
         }
+        Text(
+            text = "${state.turn.name} turn",
+            fontSize = 22.sp,
+            modifier = Modifier.align(Alignment.BottomStart),
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
@@ -62,9 +72,13 @@ fun Piece(
                 .offset(positionX, positionY)
                 .clickable {
                     piece?.let {
-                        viewModel.onEvent(
-                            EngineEvent.ChoosePiece(piece)
-                        )
+                        if (viewModel.boardState.value.turn == piece.player) {
+                            viewModel.onEvent(
+                                EngineEvent.ChoosePiece(piece)
+                            )
+                        } else if (viewModel.boardState.value.state.piece != null) {
+                            viewModel.onEvent(EngineEvent.MoveTo(piece.col, piece.row))
+                        }
                     }
                 }
         )
