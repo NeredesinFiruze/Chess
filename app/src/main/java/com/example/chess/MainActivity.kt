@@ -11,7 +11,9 @@ import androidx.compose.ui.Modifier
 import com.example.chess.chess_board_ui.BoardWithPiece
 import com.example.chess.chess_engine.ChessModel
 import com.example.chess.ui.theme.ChessTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
