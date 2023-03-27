@@ -7,8 +7,9 @@ data class EngineState(
 )
 
 data class BoardState(
-    val board: ArrayList<Pieces> = arrayListOf(),
-    val turn: Player = Player.WHITE,
+    var board: ArrayList<Pieces> = arrayListOf(),
     var canMove: ArrayList<Int> = arrayListOf(),
+    var moveList: ArrayList<String> = arrayListOf(),
+    var turn: Player = Player.BLACK,
     val state: EngineState = EngineState()
 )

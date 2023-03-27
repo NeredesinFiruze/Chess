@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,16 +20,16 @@ import com.example.chess.chess_engine.ChessModel
 
 @Composable
 fun Board(viewModel: ChessModel) {
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center
-    ){
-        repeat(4){col->
+    ) {
+        repeat(4) { col ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement =Arrangement.Center
+                horizontalArrangement = Arrangement.Center
             ) {
-                repeat(4){row->
+                repeat(4) { row ->
                     Cell(
                         background = Cell1,
                         col = 9 - ((col + 1) * 2 - 1),
@@ -43,11 +44,11 @@ fun Board(viewModel: ChessModel) {
                     )
                 }
             }
-            Row (
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement =Arrangement.Center
-            ){
-                repeat(4){row->
+                horizontalArrangement = Arrangement.Center
+            ) {
+                repeat(4) { row ->
                     Cell(
                         background = Cell2,
                         col = 9 - ((col + 1) * 2),
@@ -71,7 +72,7 @@ fun Cell(
     background: Color,
     col: Int,
     row: Int,
-    viewModel: ChessModel
+    viewModel: ChessModel,
 ) {
     val state by viewModel.boardState.collectAsState()
 
@@ -80,14 +81,27 @@ fun Cell(
             .size(DpSize(45.dp, 45.dp))
             .background(background)
             .drawBehind {
-                if (state.canMove.contains("$col$row".toInt())){
-                    drawCircle(color = Color(0xFF86E75C), radius = 15f)
+                val canMove = state.canMove.contains("$col$row".toInt())
+                if (canMove) {
+                    drawCircle(color = Color(0xFF86E75C), radius = 15f, alpha = .6f)
+                    if (state.board.any {
+                            it.col == col &&
+                                    it.row == row
+                        }
+                    ) {
+                        drawCircle(
+                            color = Color(0xFF86E75C),
+                            radius = 50f,
+                            alpha = .6f,
+                            style = Stroke(15f)
+                        )
+                    }
                 }
             }
             .clickable {
                 viewModel.onEvent(EngineEvent.MoveTo(col, row))
             }
-    ){
+    ) {
         Text(text = "$col$row", modifier = Modifier.align(Alignment.BottomStart), fontSize = 10.sp)
     }
 }
